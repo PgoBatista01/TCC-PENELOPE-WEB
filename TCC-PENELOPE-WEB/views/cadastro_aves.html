@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Ave | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Catálogo de biodiversidade</span>
+
+        <h1>Cadastro de aves</h1>
+
+        <p>
+            Adicione novas espécies ao catálogo Penelope e ajude a divulgar
+            a diversidade de pássaros encontrados no Vale do Ribeira.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('aves') }}" class="btn btn-secundario">
+                Ver catálogo de aves
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Nova espécie</span>
+        <h2>Informações da ave</h2>
+        <p>Preencha os dados para cadastrar uma espécie no sistema.</p>
+    </div>
+
+    <form
+        class="formulario"
+        method="POST"
+        action="{{ url_for('cadastro_ave') }}"
+        enctype="multipart/form-data"
+    >
+        <div class="form-linha">
+            <div class="form-grupo">
+                <label for="nome_popular">Nome popular *</label>
+
+                <input
+                    type="text"
+                    id="nome_popular"
+                    name="nome_popular"
+                    maxlength="100"
+                    placeholder="Ex.: Tucano-toco"
+                    required
+                >
+            </div>
+
+            <div class="form-grupo">
+                <label for="nome_binomial">Nome científico *</label>
+
+                <input
+                    type="text"
+                    id="nome_binomial"
+                    name="nome_binomial"
+                    maxlength="50"
+                    placeholder="Ex.: Ramphastos toco"
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="form-linha">
+            <div class="form-grupo">
+                <label for="passaro_familia">Família da ave *</label>
+
+                <input
+                    type="text"
+                    id="passaro_familia"
+                    name="passaro_familia"
+                    maxlength="50"
+                    placeholder="Ex.: Ramphastidae"
+                    required
+                >
+            </div>
+
+            <div class="form-grupo">
+                <label for="estado_conservacao">
+                    Estado de conservação *
+                </label>
+
+                <select
+                    id="estado_conservacao"
+                    name="estado_conservacao"
+                    required
+                >
+                    <option value="">Selecione uma opção</option>
+                    <option value="LC">LC — Pouco preocupante</option>
+                    <option value="NT">NT — Quase ameaçada</option>
+                    <option value="VU">VU — Vulnerável</option>
+                    <option value="EN">EN — Em perigo</option>
+                    <option value="CR">CR — Criticamente em perigo</option>
+                    <option value="EW">EW — Extinta na natureza</option>
+                    <option value="EX">EX — Extinta</option>
+                    <option value="DD">DD — Dados insuficientes</option>
+                    <option value="NE">NE — Não avaliada</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-grupo">
+            <label for="passaro_descricao">Descrição da ave *</label>
+
+            <textarea
+                id="passaro_descricao"
+                name="passaro_descricao"
+                maxlength="1000"
+                rows="5"
+                placeholder="Descreva características, habitat, alimentação e outras informações relevantes."
+                required
+            ></textarea>
+
+            <small class="form-ajuda">
+                Máximo de 1.000 caracteres.
+            </small>
+        </div>
+
+        <div class="form-grupo">
+            <label for="envergadura_cm">Envergadura em centímetros *</label>
+
+            <input
+                type="number"
+                id="envergadura_cm"
+                name="envergadura_cm"
+                min="1"
+                max="1000"
+                step="1"
+                placeholder="Ex.: 150"
+                required
+            >
+
+            <small class="form-ajuda">
+                Informe a medida da ponta de uma asa até a outra, com as asas abertas.
+            </small>
+        </div>
+
+        <div class="form-grupo">
+            <label for="imagem">Fotografia da ave (opcional)</label>
+
+            <input
+                type="file"
+                id="imagem"
+                name="imagem"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+            >
+
+            <small class="form-ajuda">
+                Formatos aceitos: JPG, JPEG, PNG e WEBP.
+            </small>
+
+            <img
+                id="previa-imagem"
+                alt="Pré-visualização da fotografia da ave"
+                hidden
+            >
+        </div>
+
+        <div class="form-acoes">
+            <button type="submit" class="btn btn-largo">
+                Cadastrar ave
+            </button>
+
+            <a href="{{ url_for('aves') }}" class="btn btn-secundario">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const campoImagem = document.getElementById("imagem");
+    const previaImagem = document.getElementById("previa-imagem");
+
+    if (campoImagem && previaImagem) {
+        campoImagem.addEventListener("change", function () {
+            const arquivo = campoImagem.files[0];
+
+            if (!arquivo) {
+                previaImagem.hidden = true;
+                previaImagem.removeAttribute("src");
+                return;
+            }
+
+            const formatosPermitidos = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+            if (!formatosPermitidos.includes(arquivo.type)) {
+                campoImagem.value = "";
+                previaImagem.hidden = true;
+                previaImagem.removeAttribute("src");
+                alert("Selecione uma imagem JPG, PNG ou WEBP.");
+                return;
+            }
+
+            const leitor = new FileReader();
+
+            leitor.onload = function (evento) {
+                previaImagem.src = evento.target.result;
+                previaImagem.hidden = false;
+            };
+
+            leitor.readAsDataURL(arquivo);
+        });
+    }
+</script>
+{% endblock %}

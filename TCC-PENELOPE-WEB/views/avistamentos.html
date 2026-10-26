@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}Avistamentos | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Ciência cidadã</span>
+
+        <h1>Compartilhe o encontro com uma ave</h1>
+
+        <p>
+            Registre suas observações e ajude a ampliar o conhecimento
+            sobre as aves e a biodiversidade do Vale do Ribeira.
+            Cada registro pode contribuir para estudos e ações de conservação.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="#formulario-avistamento" class="btn">
+                Registrar observação
+            </a>
+
+            <a href="{{ url_for('mapa') }}" class="btn btn-secundario">
+                Explorar mapa
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="container secao" id="formulario-avistamento">
+
+    <div class="secao-titulo">
+        <span class="eyebrow">Novo registro</span>
+        <h2>Registrar avistamento</h2>
+        <p>
+            Preencha as informações abaixo. Os campos com * são obrigatórios.
+        </p>
+    </div>
+
+    <form
+        class="formulario"
+        method="POST"
+        action="{{ url_for('avistamentos') }}"
+        enctype="multipart/form-data"
+    >
+        <div class="form-grupo">
+            <label for="passaro_id">Espécie observada *</label>
+
+            <select id="passaro_id" name="passaro_id" required>
+                <option value="">Selecione uma ave</option>
+
+                {% for ave in aves %}
+                    <option value="{{ ave.passaro_id }}">
+                        {{ ave.nome_popular }} — {{ ave.nome_binomial }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            {% if not aves %}
+                <small class="form-ajuda">
+                    Ainda não há aves cadastradas no catálogo.
+                    Cadastre uma espécie antes de registrar o avistamento.
+                </small>
+            {% endif %}
+        </div>
+
+        <div class="form-grupo">
+            <label for="avistamento_img_descricao">
+                Descrição da observação
+            </label>
+
+            <textarea
+                id="avistamento_img_descricao"
+                name="avistamento_img_descricao"
+                maxlength="255"
+                placeholder="Conte onde a ave estava, o que estava fazendo ou outras características observadas."
+            ></textarea>
+
+            <small class="form-ajuda">
+                Evite divulgar informações que possam colocar ninhos ou aves
+                vulneráveis em risco.
+            </small>
+        </div>
+
+        <div class="form-grupo">
+            <label for="avistamento_img_date">Data da observação *</label>
+
+            <input
+                type="date"
+                id="avistamento_img_date"
+                name="avistamento_img_date"
+                required
+            >
+        </div>
+
+        <div class="form-linha">
+            <div class="form-grupo">
+                <label for="avistamento_img_latitude">Latitude *</label>
+
+                <input
+                    type="number"
+                    id="avistamento_img_latitude"
+                    name="avistamento_img_latitude"
+                    min="-90"
+                    max="90"
+                    step="any"
+                    placeholder="-24.487"
+                    required
+                >
+            </div>
+
+            <div class="form-grupo">
+                <label for="avistamento_img_longitude">Longitude *</label>
+
+                <input
+                    type="number"
+                    id="avistamento_img_longitude"
+                    name="avistamento_img_longitude"
+                    min="-180"
+                    max="180"
+                    step="any"
+                    placeholder="-47.834"
+                    required
+                >
+            </div>
+        </div>
+
+        <div class="localizacao-acoes">
+            <button
+                type="button"
+                class="btn btn-secundario"
+                id="obter-localizacao"
+            >
+                Usar minha localização
+            </button>
+
+            <small id="mensagem-localizacao" class="form-ajuda" aria-live="polite">
+                Você também pode preencher as coordenadas manualmente.
+            </small>
+        </div>
+
+        <div class="form-grupo">
+            <label for="imagem">Fotografia da ave *</label>
+
+            <input
+                type="file"
+                id="imagem"
+                name="imagem"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                required
+            >
+
+            <small class="form-ajuda">
+                Formatos aceitos: JPG, JPEG, PNG e WEBP.
+            </small>
+
+            <img
+                id="previa-imagem"
+                alt="Pré-visualização da fotografia selecionada"
+                hidden
+            >
+        </div>
+
+        <div class="form-acoes">
+            <button
+                type="submit"
+                class="btn btn-largo"
+                {% if not aves %}disabled{% endif %}
+            >
+                Enviar avistamento
+            </button>
+        </div>
+
+        <p class="form-ajuda">
+            Ao enviar, confirme que as informações estão corretas e que
+            você tem autorização para compartilhar a fotografia.
+        </p>
+    </form>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Contribuições da comunidade</span>
+        <h2>Avistamentos registrados</h2>
+        <p>
+            Consulte os registros que estão disponíveis no sistema.
+        </p>
+    </div>
+
+    {% if avistamentos %}
+
+        <div class="cards">
+            {% for registro in avistamentos %}
+                <article class="card">
+
+                    {% if registro.avistamento_img_filepath %}
+                        <img
+                            class="card-imagem"
+                            src="{{ url_for('static', filename=registro.avistamento_img_filepath) }}"
+                            alt="Fotografia do avistamento de {{ registro.passaro.nome_popular }}"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="ave-imagem-vazia">
+                            <span aria-hidden="true">🐦</span>
+                            <p>Sem fotografia disponível</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-conteudo">
+                        <h3>
+                            {{ registro.passaro.nome_popular }}
+                        </h3>
+
+                        <p class="nome-cientifico">
+                            {{ registro.passaro.nome_binomial }}
+                        </p>
+
+                        <p>
+                            <strong>Data:</strong>
+                            {% if registro.avistamento_img_date %}
+                                {{ registro.avistamento_img_date.strftime('%d/%m/%Y') }}
+                            {% else %}
+                                Não informada
+                            {% endif %}
+                        </p>
+
+                        {% if registro.avistamento_img_descricao %}
+                            <p>
+                                {{ registro.avistamento_img_descricao }}
+                            </p>
+                        {% endif %}
+
+                        {% if registro.avistamento_img_latitude is not none
+                              and registro.avistamento_img_longitude is not none %}
+                            <p>
+                                <strong>Localização:</strong>
+                                {{ registro.avistamento_img_latitude }},
+                                {{ registro.avistamento_img_longitude }}
+                            </p>
+
+                            <div class="card-acoes">
+                                <a
+                                    class="btn btn-secundario"
+                                    href="https://www.openstreetmap.org/?mlat={{ registro.avistamento_img_latitude }}&mlon={{ registro.avistamento_img_longitude }}#map=15/{{ registro.avistamento_img_latitude }}/{{ registro.avistamento_img_longitude }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Ver localização
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+            <span aria-hidden="true" style="font-size: 2.5rem;">🌿</span>
+
+            <h3>Seja a primeira pessoa a contribuir!</h3>
+
+            <p>
+                Ainda não há avistamentos registrados para exibir.
+                Compartilhe a primeira observação e ajude a construir
+                o catálogo de ciência cidadã do Penelope.
+            </p>
+        </div>
+
+    {% endif %}
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Preenche latitude e longitude usando a localização do dispositivo.
+    const botaoLocalizacao = document.getElementById("obter-localizacao");
+    const campoLatitude = document.getElementById("avistamento_img_latitude");
+    const campoLongitude = document.getElementById("avistamento_img_longitude");
+    const mensagemLocalizacao = document.getElementById("mensagem-localizacao");
+
+    if (botaoLocalizacao) {
+        botaoLocalizacao.addEventListener("click", function () {
+            if (!navigator.geolocation) {
+                mensagemLocalizacao.textContent =
+                    "Seu navegador não oferece suporte à localização.";
+                return;
+            }
+
+            mensagemLocalizacao.textContent =
+                "Obtendo sua localização...";
+
+            navigator.geolocation.getCurrentPosition(
+                function (posicao) {
+                    campoLatitude.value =
+                        posicao.coords.latitude.toFixed(6);
+
+                    campoLongitude.value =
+                        posicao.coords.longitude.toFixed(6);
+
+                    mensagemLocalizacao.textContent =
+                        "Localização preenchida. Confira os valores antes de enviar.";
+                },
+                function () {
+                    mensagemLocalizacao.textContent =
+                        "Não foi possível obter a localização. Verifique a permissão do navegador ou preencha manualmente.";
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        });
+    }
+
+    // Pré-visualização local da fotografia selecionada.
+    const campoImagem = document.getElementById("imagem");
+    const previaImagem = document.getElementById("previa-imagem");
+
+    if (campoImagem && previaImagem) {
+        campoImagem.addEventListener("change", function () {
+            const arquivo = campoImagem.files[0];
+
+            if (!arquivo) {
+                previaImagem.hidden = true;
+                previaImagem.removeAttribute("src");
+                return;
+            }
+
+            const formatosPermitidos = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+            if (!formatosPermitidos.includes(arquivo.type)) {
+                campoImagem.value = "";
+                previaImagem.hidden = true;
+                previaImagem.removeAttribute("src");
+                alert("Selecione uma imagem JPG, PNG ou WEBP.");
+                return;
+            }
+
+            const leitor = new FileReader();
+
+            leitor.onload = function (evento) {
+                previaImagem.src = evento.target.result;
+                previaImagem.hidden = false;
+            };
+
+            leitor.readAsDataURL(arquivo);
+        });
+    }
+
+    // Impede datas futuras no campo de data.
+    const campoData = document.getElementById("avistamento_img_date");
+
+    if (campoData) {
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoje.getDate()).padStart(2, "0");
+
+        campoData.max = `${ano}-${mes}-${dia}`;
+    }
+</script>
+{% endblock %}

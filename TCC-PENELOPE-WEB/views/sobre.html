@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Sobre o Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Conheça o projeto</span>
+
+        <h1>Penelope: tecnologia a favor da natureza</h1>
+
+        <p>
+            Um projeto que une tecnologia e ciência cidadã para incentivar
+            o conhecimento e a conservação das aves no Vale do Ribeira.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('aves') }}" class="btn">
+                Conhecer as aves
+            </a>
+
+            <a href="{{ url_for('avistamentos') }}" class="btn btn-secundario">
+                Fazer uma contribuição
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="sobre-apresentacao">
+
+        <div class="sobre-texto">
+            <span class="eyebrow">Quem somos</span>
+
+            <h2>Conhecimento que aproxima as pessoas da biodiversidade</h2>
+
+            <p>
+                O Penelope é um projeto desenvolvido como Trabalho de
+                Conclusão de Curso (TCC), com a proposta de utilizar a
+                tecnologia como ferramenta de apoio à conservação de aves
+                no Vale do Ribeira, em São Paulo.
+            </p>
+
+            <p>
+                A plataforma busca reunir informações sobre espécies,
+                fotografias, cantos e avistamentos, incentivando a
+                participação da comunidade no registro e na valorização
+                da biodiversidade regional.
+            </p>
+
+            <p>
+                A iniciativa também procura tornar o conhecimento sobre
+                as aves mais acessível, despertando o interesse pela
+                educação ambiental e pela proteção da natureza.
+            </p>
+        </div>
+
+        <div class="sobre-ilustracao" aria-hidden="true">
+            <span>🌳</span>
+            <span>🐦</span>
+            <span>🍃</span>
+        </div>
+
+    </div>
+</section>
+
+<section class="sobre-faixa">
+    <div class="container">
+        <div class="secao-titulo">
+            <span class="eyebrow">Nossa proposta</span>
+            <h2>Como o Penelope contribui?</h2>
+            <p>
+                A plataforma foi pensada para aproximar tecnologia,
+                informação e participação da comunidade.
+            </p>
+        </div>
+
+        <div class="sobre-beneficios">
+
+            <article class="sobre-card">
+                <span aria-hidden="true">📚</span>
+                <h3>Conhecimento</h3>
+                <p>
+                    Reunir informações sobre as aves, seus nomes,
+                    características e estados de conservação.
+                </p>
+            </article>
+
+            <article class="sobre-card">
+                <span aria-hidden="true">📸</span>
+                <h3>Registros</h3>
+                <p>
+                    Incentivar o compartilhamento de fotografias,
+                    gravações e observações de aves.
+                </p>
+            </article>
+
+            <article class="sobre-card">
+                <span aria-hidden="true">🔬</span>
+                <h3>Ciência cidadã</h3>
+                <p>
+                    Estimular a participação das pessoas na coleta
+                    de informações que podem apoiar estudos sobre
+                    a biodiversidade.
+                </p>
+            </article>
+
+            <article class="sobre-card">
+                <span aria-hidden="true">🌱</span>
+                <h3>Conservação</h3>
+                <p>
+                    Promover a conscientização ambiental e o cuidado
+                    com as espécies e seus habitats.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="sobre-regiao">
+
+        <div>
+            <span class="eyebrow">Nosso território</span>
+            <h2>O Vale do Ribeira e sua biodiversidade</h2>
+
+            <p>
+                O Vale do Ribeira possui importantes áreas naturais
+                associadas à Mata Atlântica e abriga uma grande diversidade
+                de seres vivos. Proteger essa riqueza depende também
+                de conhecer as espécies e compreender a importância
+                de seus ambientes.
+            </p>
+
+            <p>
+                Nesse contexto, o Penelope busca incentivar a observação
+                responsável das aves e reunir informações que ajudem
+                a valorizar o patrimônio natural da região.
+            </p>
+
+            <a href="{{ url_for('mapa') }}" class="btn">
+                Explorar mapa de avistamentos
+            </a>
+        </div>
+
+        <div class="sobre-regiao-destaque">
+            <span aria-hidden="true">🌿</span>
+            <h3>Conhecer para preservar</h3>
+            <p>
+                Cada observação responsável pode despertar curiosidade,
+                ampliar o conhecimento e fortalecer a conscientização
+                sobre a natureza.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section class="sobre-faixa">
+    <div class="container sobre-ods">
+
+        <div class="sobre-ods-simbolo" aria-hidden="true">
+            <span>ODS 15</span>
+            <span>🌳</span>
+        </div>
+
+        <div>
+            <span class="eyebrow">Objetivos de Desenvolvimento Sustentável</span>
+
+            <h2>ODS 15 — Vida Terrestre</h2>
+
+            <p>
+                O projeto se relaciona ao Objetivo de Desenvolvimento
+                Sustentável 15, que busca proteger, recuperar e promover
+                o uso sustentável dos ecossistemas terrestres, além de
+                contribuir para a conservação da biodiversidade.
+            </p>
+
+            <p>
+                Ao incentivar o conhecimento e os registros de aves,
+                o Penelope procura colaborar com a educação ambiental
+                e a conscientização sobre a importância da conservação.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Explore a plataforma</span>
+        <h2>Faça parte dessa iniciativa</h2>
+        <p>
+            Conheça as espécies, descubra os registros disponíveis
+            e participe de forma responsável.
+        </p>
+    </div>
+
+    <div class="sobre-acoes">
+        <a href="{{ url_for('aves') }}" class="sobre-acao">
+            <span aria-hidden="true">🐦</span>
+            <h3>Catálogo de aves</h3>
+            <p>Descubra as espécies cadastradas.</p>
+        </a>
+
+        <a href="{{ url_for('avistamentos') }}" class="sobre-acao">
+            <span aria-hidden="true">📷</span>
+            <h3>Registrar avistamentos</h3>
+            <p>Compartilhe suas observações.</p>
+        </a>
+
+        <a href="{{ url_for('estatisticas') }}" class="sobre-acao">
+            <span aria-hidden="true">📊</span>
+            <h3>Estatísticas</h3>
+            <p>Consulte os dados da plataforma.</p>
+        </a>
+    </div>
+</section>
+
+<section class="sobre-convite">
+    <div class="container sobre-convite-conteudo">
+        <h2>A conservação começa pelo conhecimento.</h2>
+
+        <p>
+            Explore o Penelope e descubra como a tecnologia pode aproximar
+            as pessoas da biodiversidade do Vale do Ribeira.
+        </p>
+
+        <a href="{{ url_for('aves') }}" class="btn">
+            Começar a explorar
+        </a>
+    </div>
+</section>
+
+{% endblock %}

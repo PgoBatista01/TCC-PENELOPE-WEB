@@ -1,0 +1,1055 @@
+
+/* ========================================
+   PENELOPE — ESTILO PRINCIPAL
+   Ciência cidadã e biodiversidade
+======================================== */
+
+:root {
+    --verde-escuro: #153e30;
+    --verde: #246b4b;
+    --verde-claro: #eaf4ec;
+    --verde-suave: #f5f9f5;
+    --branco: #ffffff;
+    --texto: #263b31;
+    --texto-suave: #63776a;
+    --borda: #dce8de;
+    --sombra: 0 8px 28px rgba(21, 62, 48, 0.08);
+    --raio: 16px;
+    --largura: 1180px;
+}
+
+/* RESET */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--texto);
+    background: var(--branco);
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--verde);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--verde-escuro);
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+.button,
+.btn {
+    cursor: pointer;
+}
+
+.container,
+.conteiner {
+    width: min(100% - 48px, var(--largura));
+    margin-inline: auto;
+}
+
+/* ========================================
+   CABEÇALHO
+======================================== */
+
+header {
+    position: relative;
+    z-index: 100;
+    background: var(--branco);
+    border-bottom: 1px solid var(--borda);
+    box-shadow: 0 3px 14px rgba(21, 62, 48, 0.035);
+}
+
+.navbar,
+.nav-container,
+.navbar .container {
+    width: min(100% - 48px, 1320px);
+    min-height: 104px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+/* Marca: logo + nome */
+
+.brand,
+.navbar-brand,
+.logo-container,
+.site-brand {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    flex: 0 0 auto;
+    min-width: 220px;
+    position: static;
+    transform: none;
+    margin: 0;
+    color: var(--verde-escuro);
+}
+
+.brand img,
+.navbar-brand img,
+.logo-container img,
+.site-brand img,
+.logo {
+    display: block;
+    width: 68px;
+    height: 68px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.brand-text,
+.brand-info,
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.brand h1,
+.navbar-brand h1,
+.logo-container h1,
+.site-brand h1,
+.brand-name {
+    margin: 0;
+    color: var(--verde-escuro);
+    font-size: 29px;
+    font-weight: 750;
+    letter-spacing: -1px;
+    line-height: 1.15;
+}
+
+.brand p,
+.navbar-brand p,
+.logo-container p,
+.site-brand p,
+.brand-subtitle {
+    margin: 4px 0 0;
+    color: var(--texto-suave);
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+/* Menu */
+
+nav {
+    min-width: 0;
+}
+
+.nav-links,
+.nav-menu,
+.navbar-nav,
+nav ul {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links a,
+.nav-menu a,
+.navbar-nav a,
+nav ul a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 10px;
+    border-radius: 9px;
+    color: #304238;
+    font-size: 14px;
+    font-weight: 650;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-menu a:hover,
+.navbar-nav a:hover,
+nav ul a:hover {
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+}
+
+/* Botão de destaque do menu */
+
+.nav-links a[href*="cadastro"],
+.nav-menu a[href*="cadastro"],
+.navbar-nav a[href*="cadastro"],
+nav a[href*="cadastro"] {
+    padding: 13px 19px;
+    border-radius: 12px;
+    background: var(--verde);
+    color: var(--branco);
+}
+
+.nav-links a[href*="cadastro"]:hover,
+.nav-menu a[href*="cadastro"]:hover,
+.navbar-nav a[href*="cadastro"]:hover,
+nav a[href*="cadastro"]:hover {
+    background: var(--verde-escuro);
+    color: var(--branco);
+}
+
+/* Botão de menu para telas pequenas */
+
+.menu-toggle,
+.nav-toggle,
+.navbar-toggler {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    background: var(--branco);
+    color: var(--verde-escuro);
+    font-size: 24px;
+}
+
+/* ========================================
+   BOTÕES
+======================================== */
+
+.btn,
+.button,
+.btn-primary,
+.btn-success,
+button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    padding: 12px 20px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    background: var(--verde);
+    color: var(--branco);
+    font-weight: 700;
+    text-align: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn:hover,
+.button:hover,
+.btn-primary:hover,
+.btn-success:hover,
+button[type="submit"]:hover {
+    background: var(--verde-escuro);
+    color: var(--branco);
+    transform: translateY(-1px);
+}
+
+.btn-outline,
+.btn-secondary {
+    border-color: var(--verde);
+    background: transparent;
+    color: var(--verde);
+}
+
+.btn-outline:hover,
+.btn-secondary:hover {
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+}
+
+/* ========================================
+   PÁGINA INICIAL
+======================================== */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 100px 0 92px;
+    background:
+        radial-gradient(
+            circle at 88% 18%,
+            rgba(191, 222, 197, 0.4),
+            transparent 32%
+        ),
+        linear-gradient(120deg, #eff7f0 0%, #ffffff 65%, #f3f8f3 100%);
+}
+
+.hero .container,
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 850px;
+}
+
+.hero-label,
+.eyebrow,
+.section-label {
+    display: inline-block;
+    margin: 0 0 24px;
+    color: var(--verde);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.hero h1,
+.hero-title {
+    max-width: 850px;
+    margin: 0 0 22px;
+    color: var(--verde-escuro);
+    font-size: clamp(38px, 4.2vw, 60px);
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -1.7px;
+}
+
+.hero p {
+    max-width: 760px;
+    margin: 0 0 24px;
+    color: var(--texto-suave);
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.hero-actions,
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.hero-note {
+    display: block;
+    margin-top: 18px;
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.hero-image {
+    max-width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+/* Seções */
+
+section {
+    scroll-margin-top: 100px;
+}
+
+.section,
+.content-section {
+    padding: 72px 0;
+}
+
+.section-heading {
+    max-width: 720px;
+    margin: 0 auto 38px;
+    text-align: center;
+}
+
+.section-heading h2,
+.section h2 {
+    color: var(--verde-escuro);
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.25;
+}
+
+.section-heading p {
+    color: var(--texto-suave);
+}
+
+/* ========================================
+   CARDS E GRIDS
+======================================== */
+
+.cards,
+.cards-grid,
+.features-grid,
+.aves-grid,
+.birds-grid,
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.card,
+.feature-card,
+.bird-card,
+.sighting-card,
+.stat-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    background: var(--branco);
+    box-shadow: var(--sombra);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover,
+.feature-card:hover,
+.bird-card:hover,
+.sighting-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(21, 62, 48, 0.12);
+}
+
+.card-content,
+.card-body {
+    padding: 22px;
+}
+
+.card h3,
+.feature-card h3,
+.bird-card h3 {
+    margin: 0 0 10px;
+    color: var(--verde-escuro);
+    font-size: 20px;
+}
+
+.card p,
+.feature-card p,
+.bird-card p {
+    color: var(--texto-suave);
+}
+
+.card img,
+.bird-card img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* ========================================
+   TÍTULOS E CONTEÚDO INTERNO
+======================================== */
+
+.page-header {
+    padding: 56px 0;
+    background: var(--verde-suave);
+    border-bottom: 1px solid var(--borda);
+}
+
+.page-header h1 {
+    margin: 0 0 12px;
+    color: var(--verde-escuro);
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.2;
+}
+
+.page-header p {
+    max-width: 760px;
+    margin: 0;
+    color: var(--texto-suave);
+    font-size: 17px;
+}
+
+main {
+    min-height: 65vh;
+}
+
+main > .container {
+    padding-top: 36px;
+    padding-bottom: 48px;
+}
+
+/* ========================================
+   FORMULÁRIOS E PESQUISA
+======================================== */
+
+form {
+    width: 100%;
+}
+
+.form-group,
+.form-field {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #cbdacf;
+    border-radius: 10px;
+    outline: none;
+    background: var(--branco);
+    color: var(--texto);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(36, 107, 75, 0.12);
+}
+
+.search-form,
+.search-bar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.search-form input,
+.search-bar input {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ========================================
+   AVES E DETALHES
+======================================== */
+
+.bird-detail,
+.detalhes-ave {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+}
+
+.bird-detail img,
+.detalhes-ave img {
+    width: 100%;
+    max-height: 480px;
+    border-radius: var(--raio);
+    object-fit: cover;
+}
+
+.bird-info,
+.bird-description {
+    min-width: 0;
+}
+
+.bird-info h1,
+.bird-description h1 {
+    margin-top: 0;
+    color: var(--verde-escuro);
+    font-size: 36px;
+}
+
+.scientific-name {
+    color: var(--texto-suave);
+    font-style: italic;
+}
+
+.tag,
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 30px;
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ========================================
+   AVISTAMENTOS, MAPA E ESTATÍSTICAS
+======================================== */
+
+.sightings-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.sighting-card {
+    padding: 22px;
+}
+
+.sighting-card h3 {
+    margin-top: 0;
+    color: var(--verde-escuro);
+}
+
+.map-container,
+#map {
+    width: 100%;
+    min-height: 420px;
+    overflow: hidden;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+}
+
+.stat-card {
+    padding: 26px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    color: var(--verde);
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.stat-label {
+    display: block;
+    margin-top: 8px;
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+/* ========================================
+   TABELAS
+======================================== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--branco);
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--borda);
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+    font-size: 13px;
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+/* ========================================
+   MENSAGENS
+======================================== */
+
+.flash-messages {
+    width: min(100% - 48px, var(--largura));
+    margin: 20px auto;
+}
+
+.flash,
+.alert {
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    background: var(--verde-suave);
+    color: var(--verde-escuro);
+}
+
+.alert-success {
+    border-color: #b7ddc0;
+    background: #edf8ef;
+}
+
+.alert-danger,
+.alert-error {
+    border-color: #efc3c3;
+    background: #fff1f1;
+    color: #8b3030;
+}
+
+/* ========================================
+   RODAPÉ
+======================================== */
+
+footer {
+    margin-top: 40px;
+    padding: 34px 24px;
+    border-top: 1px solid var(--borda);
+    background: #f4f8f4;
+    color: var(--texto-suave);
+    text-align: center;
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 13px;
+}
+
+footer a {
+    color: var(--verde);
+    font-weight: 650;
+}
+
+/* ========================================
+   ACESSIBILIDADE
+======================================== */
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #8bbf99;
+    outline-offset: 3px;
+}
+
+::selection {
+    background: #cde8d2;
+    color: var(--verde-escuro);
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 1100px) {
+    .navbar,
+    .nav-container,
+    .navbar .container {
+        width: min(100% - 36px, 1320px);
+        min-height: 92px;
+        gap: 18px;
+    }
+
+    .brand,
+    .navbar-brand,
+    .logo-container,
+    .site-brand {
+        min-width: 190px;
+        gap: 10px;
+    }
+
+    .brand img,
+    .navbar-brand img,
+    .logo-container img,
+    .site-brand img,
+    .logo {
+        width: 58px;
+        height: 58px;
+    }
+
+    .brand h1,
+    .navbar-brand h1,
+    .logo-container h1,
+    .site-brand h1,
+    .brand-name {
+        font-size: 25px;
+    }
+
+    .nav-links,
+    .nav-menu,
+    .navbar-nav,
+    nav ul {
+        gap: 2px;
+    }
+
+    .nav-links a,
+    .nav-menu a,
+    .navbar-nav a,
+    nav ul a {
+        padding: 9px 7px;
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 76px 0;
+    }
+
+    .cards,
+    .cards-grid,
+    .features-grid,
+    .aves-grid,
+    .birds-grid,
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 760px) {
+    .container,
+    .conteiner {
+        width: calc(100% - 32px);
+    }
+
+    .navbar,
+    .nav-container,
+    .navbar .container {
+        position: relative;
+        width: calc(100% - 32px);
+        min-height: 82px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 0;
+    }
+
+    .brand,
+    .navbar-brand,
+    .logo-container,
+    .site-brand {
+        min-width: 0;
+        max-width: calc(100% - 60px);
+        gap: 9px;
+    }
+
+    .brand img,
+    .navbar-brand img,
+    .logo-container img,
+    .site-brand img,
+    .logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand h1,
+    .navbar-brand h1,
+    .logo-container h1,
+    .site-brand h1,
+    .brand-name {
+        font-size: 22px;
+        letter-spacing: -0.5px;
+    }
+
+    .brand p,
+    .navbar-brand p,
+    .logo-container p,
+    .site-brand p,
+    .brand-subtitle {
+        font-size: 10px;
+    }
+
+    .menu-toggle,
+    .nav-toggle,
+    .navbar-toggler {
+        display: inline-flex;
+        flex-shrink: 0;
+    }
+
+    .nav-links,
+    .nav-menu,
+    .navbar-nav,
+    nav ul {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 12px 0 4px;
+    }
+
+    /* Funciona com menus que usam a classe .open */
+
+    .nav-links:not(.open),
+    .nav-menu:not(.open),
+    .navbar-nav:not(.open) {
+        display: none;
+    }
+
+    .nav-links.open,
+    .nav-menu.open,
+    .navbar-nav.open {
+        display: flex;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav ul a,
+    .nav-links a,
+    .nav-menu a,
+    .navbar-nav a {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .hero {
+        padding: 60px 0 56px;
+    }
+
+    .hero-label,
+    .eyebrow,
+    .section-label {
+        margin-bottom: 17px;
+        font-size: 11px;
+        letter-spacing: 1.2px;
+    }
+
+    .hero h1,
+    .hero-title {
+        font-size: clamp(34px, 8vw, 46px);
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .hero p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .hero-actions,
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-actions .btn,
+    .hero-buttons .btn,
+    .hero-actions .button,
+    .hero-buttons .button {
+        width: 100%;
+    }
+
+    .section,
+    .content-section {
+        padding: 48px 0;
+    }
+
+    .cards,
+    .cards-grid,
+    .features-grid,
+    .aves-grid,
+    .birds-grid,
+    .stats-grid,
+    .sightings-list {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .bird-detail,
+    .detalhes-ave {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .bird-info h1,
+    .bird-description h1 {
+        font-size: 30px;
+    }
+
+    .search-form,
+    .search-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form .btn,
+    .search-bar .btn {
+        width: 100%;
+    }
+
+    .page-header {
+        padding: 38px 0;
+    }
+
+    .map-container,
+    #map {
+        min-height: 320px;
+    }
+
+    main > .container {
+        padding-top: 26px;
+        padding-bottom: 36px;
+    }
+
+    footer {
+        margin-top: 24px;
+        padding: 28px 16px;
+    }
+}
+
+/* Telas muito pequenas */
+
+@media (max-width: 380px) {
+    .brand img,
+    .navbar-brand img,
+    .logo-container img,
+    .site-brand img,
+    .logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .brand h1,
+    .navbar-brand h1,
+    .logo-container h1,
+    .site-brand h1,
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .hero h1,
+    .hero-title {
+        font-size: 32px;
+    }
+}
+
+/* Reduz animações se o usuário preferir */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes da Ave | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="container secao">
+
+    <div class="detalhes-voltar">
+        <a href="{{ url_for('aves') }}" class="btn btn-secundario">
+            ← Voltar ao catálogo
+        </a>
+    </div>
+
+    {% if passaro %}
+
+        <header class="detalhes-cabecalho">
+            <span class="eyebrow">Catálogo Penelope</span>
+
+            <h1>{{ passaro.nome_popular }}</h1>
+
+            <p class="nome-cientifico">
+                {{ passaro.nome_binomial }}
+            </p>
+
+            <span class="estado-conservacao">
+                Conservação: {{ passaro.estado_conservacao }}
+            </span>
+        </header>
+
+        <section class="detalhes-bloco">
+            <h2>Sobre esta ave</h2>
+
+            <div class="detalhes-informacoes">
+                <div class="detalhes-item">
+                    <span>Nome popular</span>
+                    <strong>{{ passaro.nome_popular }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Nome científico</span>
+                    <strong>{{ passaro.nome_binomial }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Família</span>
+                    <strong>{{ passaro.passaro_familia }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Envergadura</span>
+                    <strong>{{ passaro.envergadura_cm }} cm</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Estado de conservação</span>
+                    <strong>{{ passaro.estado_conservacao }}</strong>
+                </div>
+            </div>
+
+            <h3>Descrição</h3>
+
+            <p class="detalhes-descricao">
+                {{ passaro.passaro_descricao }}
+            </p>
+        </section>
+
+        <section class="detalhes-bloco">
+            <h2>Fotografias</h2>
+
+            {% if imagens %}
+
+                <div class="galeria-aves">
+                    {% for imagem in imagens %}
+                        {% if imagem.img_passaro_filepath %}
+                            <figure class="galeria-item">
+                                <img
+                                    src="{{ url_for('static', filename=imagem.img_passaro_filepath) }}"
+                                    alt="Fotografia de {{ passaro.nome_popular }}"
+                                    loading="lazy"
+                                >
+
+                                {% if imagem.img_passaro_origin %}
+                                    <figcaption>
+                                        Fonte: {{ imagem.img_passaro_origin }}
+                                    </figcaption>
+                                {% endif %}
+                            </figure>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            {% else %}
+
+                <div class="estado-vazio">
+                    <span aria-hidden="true">🐦</span>
+                    <p>Ainda não há fotografias cadastradas para esta ave.</p>
+                </div>
+
+            {% endif %}
+        </section>
+
+        <section class="detalhes-bloco">
+            <h2>Cantos da ave</h2>
+
+            {% if cantos %}
+
+                <div class="lista-midias">
+                    {% for canto in cantos %}
+                        <article class="midia-item">
+                            <div>
+                                <h3>
+                                    {% if canto.canto_filename %}
+                                        {{ canto.canto_filename }}
+                                    {% else %}
+                                        Canto {{ loop.index }}
+                                    {% endif %}
+                                </h3>
+
+                                {% if canto.canto_origin %}
+                                    <p>Fonte: {{ canto.canto_origin }}</p>
+                                {% endif %}
+
+                                {% if canto.canto_date %}
+                                    <p>
+                                        Data:
+                                        {{ canto.canto_date.strftime('%d/%m/%Y') }}
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            {% if canto.canto_filepath %}
+                                <audio controls preload="none">
+                                    <source
+                                        src="{{ url_for('static', filename=canto.canto_filepath) }}"
+                                        {% if canto.canto_filetype %}
+                                            type="{{ canto.canto_filetype }}"
+                                        {% endif %}
+                                    >
+                                    Seu navegador não suporta áudio.
+                                </audio>
+                            {% endif %}
+                        </article>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+
+                <div class="estado-vazio">
+                    <span aria-hidden="true">🔊</span>
+                    <p>Não há gravações de canto cadastradas para esta ave.</p>
+                </div>
+
+            {% endif %}
+        </section>
+
+        <section class="detalhes-bloco">
+            <h2>Registros de avistamentos</h2>
+
+            {% set total_avistamentos =
+                passaro.avistamentos_imagem|length
+                + passaro.avistamentos_audio|length
+                + passaro.avistamentos_video|length
+            %}
+
+            <div class="detalhes-informacoes">
+                <div class="detalhes-item">
+                    <span>Registros com fotografia</span>
+                    <strong>{{ passaro.avistamentos_imagem|length }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Registros com áudio</span>
+                    <strong>{{ passaro.avistamentos_audio|length }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Registros com vídeo</span>
+                    <strong>{{ passaro.avistamentos_video|length }}</strong>
+                </div>
+
+                <div class="detalhes-item">
+                    <span>Total de registros</span>
+                    <strong>{{ total_avistamentos }}</strong>
+                </div>
+            </div>
+
+            <p>
+                Os registros da comunidade ajudam a ampliar o conhecimento
+                sobre a presença das aves no Vale do Ribeira.
+            </p>
+
+            <a href="{{ url_for('avistamentos') }}" class="btn">
+                Registrar avistamento
+            </a>
+
+            <a href="{{ url_for('mapa') }}" class="btn btn-secundario">
+                Explorar mapa
+            </a>
+        </section>
+
+    {% else %}
+
+        <div class="estado-vazio">
+            <h2>Ave não encontrada</h2>
+
+            <p>
+                Não foi possível localizar esta espécie no catálogo.
+            </p>
+
+            <a href="{{ url_for('aves') }}" class="btn">
+                Voltar ao catálogo
+            </a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

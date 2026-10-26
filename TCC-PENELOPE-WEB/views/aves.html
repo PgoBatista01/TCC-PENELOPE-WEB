@@ -1,0 +1,388 @@
+
+{% extends "base.html" %}
+
+{% block title %}Catálogo de Aves | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="aves-hero">
+    <div class="aves-hero-conteudo">
+        <span class="aves-etiqueta">BIODIVERSIDADE DO VALE DO RIBEIRA</span>
+        <h1>Catálogo de Aves</h1>
+        <p>
+            Conheça as espécies de pássaros da nossa região e descubra
+            mais sobre sua importância para a natureza.
+        </p>
+
+        <form action="{{ url_for('aves') }}" method="GET" class="aves-busca">
+            <input
+                type="search"
+                name="q"
+                placeholder="Buscar por nome popular, científico ou família..."
+                value="{{ pesquisa or '' }}"
+                aria-label="Buscar aves"
+            >
+            <button type="submit">Pesquisar</button>
+        </form>
+    </div>
+</section>
+
+<section class="catalogo-aves">
+    <div class="catalogo-cabecalho">
+        <div>
+            <h2>Conheça as espécies</h2>
+            <p>Explore as aves registradas no catálogo Penelope.</p>
+        </div>
+
+        <a href="{{ url_for('avistamentos') }}" class="botao-secundario">
+            Registrar avistamento
+        </a>
+    </div>
+
+    {% if aves %}
+    <div class="grade-aves">
+        {% for ave in aves %}
+
+        {% set nome = ave.nome_popular|lower
+            |replace('á', 'a')
+            |replace('ã', 'a')
+            |replace('â', 'a')
+            |replace('é', 'e')
+            |replace('ê', 'e')
+            |replace('í', 'i')
+            |replace('ó', 'o')
+            |replace('ô', 'o')
+            |replace('õ', 'o')
+            |replace('ú', 'u')
+            |replace('ç', 'c')
+            |replace(' ', '_')
+            |replace('-', '_') %}
+
+        {% set imagens_aves = {
+            'jacuguacu': 'jacuguaçu.png',
+            'jacupemba': 'jacupemba.png',
+            'papagaio_de_cara_roxa': 'papagaio_de_cara_roxa.png',
+            'papagaio_de_peito_roxo': 'papagaio_de_peito_roxo.png',
+            'pixoxo': 'pixoxó.png',
+            'tie_sangue': 'tie_sangue.png',
+            'tucano': 'tucano_de_bico_verde.png.jpg',
+            'tucano_de_bico_verde': 'tucano_de_bico_verde.png.jpg',
+            'tucanucu': 'tucanucu.png'
+        } %}
+
+        {% set arquivo = imagens_aves.get(nome) %}
+
+        <article class="card-ave">
+            <div class="card-ave-imagem">
+                {% if arquivo %}
+                <img
+                    src="{{ url_for('static', filename='imgs/' ~ arquivo) }}"
+                    alt="Fotografia de {{ ave.nome_popular }}"
+                    loading="lazy"
+                >
+                {% else %}
+                <img
+                    src="{{ url_for('static', filename='imgs/penelope.png') }}"
+                    alt="Imagem ilustrativa do Penelope"
+                    loading="lazy"
+                >
+                {% endif %}
+            </div>
+
+            <div class="card-ave-conteudo">
+                <span class="ave-familia">
+                    {{ ave.passaro_familia or "Família não informada" }}
+                </span>
+
+                <h3>{{ ave.nome_popular }}</h3>
+
+                <p class="ave-cientifico">
+                    {{ ave.nome_binomial }}
+                </p>
+
+                <div class="ave-conservacao">
+                    <strong>Conservação:</strong>
+                    {{ ave.estado_conservacao or "Não informado" }}
+                </div>
+
+                {% if ave.envergadura_cm %}
+                <p class="ave-envergadura">
+                    <strong>Envergadura:</strong>
+                    {{ ave.envergadura_cm }} cm
+                </p>
+                {% endif %}
+
+                {% if ave.passaro_descricao %}
+                <p class="ave-descricao">
+                    {{ ave.passaro_descricao|truncate(130) }}
+                </p>
+                {% endif %}
+
+                <a
+                    href="{{ url_for('detalhes_aves', passaro_id=ave.passaro_id) }}"
+                    class="botao-detalhes"
+                >
+                    Ver detalhes
+                    <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </article>
+
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="aves-vazio">
+        <span>🔎</span>
+        <h3>Nenhuma ave encontrada</h3>
+        <p>Tente pesquisar por outro nome ou confira a escrita.</p>
+
+        <a href="{{ url_for('aves') }}" class="botao-detalhes">
+            Ver todas as aves
+        </a>
+    </div>
+    {% endif %}
+</section>
+
+<section class="aves-convite">
+    <div>
+        <h2>Você avistou uma ave?</h2>
+        <p>
+            Compartilhe seu registro e ajude a ampliar o conhecimento
+            sobre as aves do Vale do Ribeira.
+        </p>
+    </div>
+
+    <a href="{{ url_for('avistamentos') }}" class="botao-secundario">
+        Registrar avistamento
+    </a>
+</section>
+
+<style>
+.aves-hero {
+    padding: 55px 30px;
+    margin-bottom: 35px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #174c36, #397b50);
+    color: white;
+}
+
+.aves-hero-conteudo {
+    max-width: 850px;
+    margin: auto;
+}
+
+.aves-etiqueta {
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: #d8edc9;
+}
+
+.aves-hero h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    margin: 14px 0;
+}
+
+.aves-hero p {
+    line-height: 1.7;
+}
+
+.aves-busca {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.aves-busca input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.aves-busca button,
+.botao-detalhes,
+.botao-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #245b3e;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.aves-busca button {
+    background: #e0efcf;
+    color: #21462f;
+}
+
+.catalogo-aves {
+    margin-bottom: 40px;
+}
+
+.catalogo-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.catalogo-cabecalho h2,
+.aves-convite h2 {
+    color: #245b3e;
+    margin-bottom: 8px;
+}
+
+.catalogo-cabecalho p,
+.aves-convite p {
+    color: #637166;
+    line-height: 1.6;
+}
+
+.grade-aves {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.card-ave {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e1e9df;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 4px 14px rgba(30, 60, 40, 0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-ave:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(30, 60, 40, 0.12);
+}
+
+.card-ave-imagem {
+    height: 220px;
+    overflow: hidden;
+    background: #edf3e9;
+}
+
+.card-ave-imagem img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.card-ave-conteudo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+
+.ave-familia {
+    color: #397b50;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.card-ave h3 {
+    color: #244b34;
+    margin: 10px 0 5px;
+    font-size: 22px;
+}
+
+.ave-cientifico {
+    margin-top: 0;
+    color: #718073;
+    font-style: italic;
+}
+
+.ave-conservacao,
+.ave-envergadura {
+    margin: 12px 0;
+    color: #425447;
+    font-size: 14px;
+}
+
+.ave-descricao {
+    color: #5e6b61;
+    line-height: 1.6;
+}
+
+.botao-detalhes {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+    padding: 14px;
+    text-align: center;
+}
+
+.aves-vazio {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f4f8f1;
+    border-radius: 14px;
+}
+
+.aves-vazio > span {
+    font-size: 38px;
+}
+
+.aves-vazio h3 {
+    color: #245b3e;
+}
+
+.aves-convite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 30px;
+    margin-bottom: 35px;
+    background: #edf5e8;
+    border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+    .aves-hero {
+        padding: 35px 20px;
+    }
+
+    .aves-busca {
+        flex-direction: column;
+    }
+
+    .aves-busca button {
+        padding: 14px;
+    }
+
+    .catalogo-cabecalho,
+    .aves-convite {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .grade-aves {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+{% endblock %}

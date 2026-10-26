@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Início | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero hero-inicio">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Tecnologia • Natureza • Ciência cidadã</span>
+
+        <h1>Conhecer as aves é o primeiro passo para protegê-las.</h1>
+
+        <p>
+            O Penelope conecta pessoas, tecnologia e ciência cidadã para
+            contribuir com a conservação dos pássaros e da biodiversidade
+            do Vale do Ribeira.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('aves') }}" class="btn">
+                <span aria-hidden="true">🐦</span>
+                Conhecer as aves
+            </a>
+
+            <a href="{{ url_for('avistamentos') }}" class="btn btn-secundario">
+                Registrar avistamento
+            </a>
+        </div>
+
+        <p class="hero-nota">
+            Uma iniciativa de valorização da biodiversidade regional.
+        </p>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Nosso propósito</span>
+        <h2>Ciência cidadã pela conservação</h2>
+        <p>
+            O Penelope busca aproximar a população da natureza por meio
+            do conhecimento e do compartilhamento de observações de aves.
+        </p>
+    </div>
+
+    <div class="inicio-beneficios">
+
+        <article class="beneficio-card">
+            <div class="beneficio-icone" aria-hidden="true">📚</div>
+            <h3>Aprenda sobre as aves</h3>
+            <p>
+                Descubra nomes populares, nomes científicos, características
+                e informações sobre a conservação das espécies.
+            </p>
+            <a href="{{ url_for('aves') }}" class="link-destaque">
+                Explorar catálogo →
+            </a>
+        </article>
+
+        <article class="beneficio-card">
+            <div class="beneficio-icone" aria-hidden="true">📸</div>
+            <h3>Compartilhe observações</h3>
+            <p>
+                Registre encontros com aves e contribua para reunir
+                informações sobre a biodiversidade da região.
+            </p>
+            <a href="{{ url_for('avistamentos') }}" class="link-destaque">
+                Registrar avistamento →
+            </a>
+        </article>
+
+        <article class="beneficio-card">
+            <div class="beneficio-icone" aria-hidden="true">📊</div>
+            <h3>Explore os dados</h3>
+            <p>
+                Consulte os indicadores do sistema e acompanhe as
+                contribuições cadastradas pela comunidade.
+            </p>
+            <a href="{{ url_for('estatisticas') }}" class="link-destaque">
+                Ver estatísticas →
+            </a>
+        </article>
+
+    </div>
+</section>
+
+<section class="inicio-faixa">
+    <div class="container inicio-faixa-conteudo">
+        <div>
+            <span class="eyebrow">Vale do Ribeira</span>
+            <h2>Uma região que merece ser conhecida e preservada.</h2>
+            <p>
+                A biodiversidade local faz parte de um patrimônio natural
+                importante. Conhecer as espécies e compartilhar observações
+                são formas de incentivar a educação ambiental e a conservação.
+            </p>
+        </div>
+
+        <div class="inicio-faixa-icone" aria-hidden="true">
+            🌳 🐦
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Dados do Penelope</span>
+        <h2>O projeto em números</h2>
+        <p>
+            Consulte os dados disponíveis no catálogo e nos registros
+            armazenados no sistema.
+        </p>
+    </div>
+
+    <div class="inicio-numeros">
+
+        <article class="numero-card">
+            <span aria-hidden="true">🐦</span>
+            <strong>{{ total_aves|default(0) }}</strong>
+            <p>Espécies cadastradas</p>
+        </article>
+
+        <article class="numero-card">
+            <span aria-hidden="true">📍</span>
+            <strong>{{ total_avistamentos|default(0) }}</strong>
+            <p>Avistamentos com fotografia</p>
+        </article>
+
+    </div>
+
+    <div class="inicio-centralizar">
+        <a href="{{ url_for('estatisticas') }}" class="btn">
+            Ver todas as estatísticas
+        </a>
+    </div>
+</section>
+
+<section class="container secao">
+    <div class="secao-titulo">
+        <span class="eyebrow">Descubra</span>
+        <h2>Conheça algumas espécies</h2>
+        <p>
+            Veja as aves cadastradas recentemente no catálogo do Penelope.
+        </p>
+    </div>
+
+    {% if ultimas_aves %}
+
+        <div class="catalogo-grid">
+            {% for ave in ultimas_aves %}
+                <article class="ave-card">
+
+                    {% if ave.imagens and ave.imagens[0].img_passaro_filepath %}
+                        <img
+                            src="{{ url_for('static', filename=ave.imagens[0].img_passaro_filepath) }}"
+                            alt="Fotografia de {{ ave.nome_popular }}"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="ave-imagem-vazia">
+                            <span aria-hidden="true">🐦</span>
+                            <p>Fotografia não disponível</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="ave-card-conteudo">
+                        <h3>{{ ave.nome_popular }}</h3>
+
+                        <p class="nome-cientifico">
+                            {{ ave.nome_binomial }}
+                        </p>
+
+                        <p class="ave-descricao">
+                            {{ ave.passaro_descricao|truncate(130, true, '...') }}
+                        </p>
+
+                        <div class="card-acoes">
+                            <a
+                                href="{{ url_for('detalhes_aves', passaro_id=ave.passaro_id) }}"
+                                class="btn"
+                            >
+                                Conhecer espécie
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+            <span aria-hidden="true">🌿</span>
+            <h3>O catálogo está começando a crescer!</h3>
+            <p>
+                As espécies cadastradas aparecerão aqui para que todos
+                possam conhecer melhor as aves da região.
+            </p>
+            <a href="{{ url_for('aves') }}" class="btn">
+                Acessar catálogo
+            </a>
+        </div>
+
+    {% endif %}
+
+    <div class="inicio-centralizar">
+        <a href="{{ url_for('aves') }}" class="btn btn-secundario">
+            Ver todas as aves
+        </a>
+    </div>
+</section>
+
+<section class="inicio-convite">
+    <div class="container inicio-convite-conteudo">
+        <span class="eyebrow">Faça parte dessa iniciativa</span>
+
+        <h2>Uma observação também pode contribuir para a ciência.</h2>
+
+        <p>
+            Conheça as aves, compartilhe seus registros e ajude a fortalecer
+            a conscientização sobre a conservação da biodiversidade.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('avistamentos') }}" class="btn">
+                Quero contribuir
+            </a>
+
+            <a href="{{ url_for('sobre') }}" class="btn btn-secundario">
+                Sobre o Penelope
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

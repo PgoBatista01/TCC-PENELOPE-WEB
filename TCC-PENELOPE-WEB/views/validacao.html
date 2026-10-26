@@ -1,0 +1,227 @@
+
+{% extends "base.html" %}
+
+{% block title %}Validação de Avistamentos | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Ciência cidadã</span>
+
+        <h1>Validação de avistamentos</h1>
+
+        <p>
+            Confira os registros enviados à plataforma e analise as
+            informações antes de utilizá-las em estudos ou estatísticas.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('avistamentos') }}" class="btn">
+                Ver avistamentos
+            </a>
+
+            <a href="{{ url_for('mapa') }}" class="btn btn-secundario">
+                Explorar mapa
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+
+    <div class="validacao-introducao">
+        <div>
+            <span class="eyebrow">Central de análise</span>
+            <h2>Registros enviados pelos usuários</h2>
+            <p>
+                Analise a fotografia, a descrição, a localização e a data
+                informadas. Quando necessário, solicite uma conferência
+                mais detalhada antes de considerar o registro confiável.
+            </p>
+        </div>
+
+        <div class="validacao-total">
+            <span>Registros encontrados</span>
+            <strong>{{ avistamentos|length }}</strong>
+        </div>
+    </div>
+
+    <div class="validacao-aviso">
+        <strong>Importante:</strong>
+        esta tela reúne registros para conferência. A presença de um
+        registro aqui não significa que a espécie já foi identificada
+        corretamente ou que o avistamento foi aprovado.
+    </div>
+
+    {% if avistamentos %}
+
+    <div class="validacao-lista">
+
+        {% for registro in avistamentos %}
+
+        <article class="validacao-card">
+
+            <div class="validacao-card-topo">
+                <div>
+                    <span class="validacao-etiqueta">
+                        Registro para análise
+                    </span>
+
+                    <h3>
+                        {% if registro.passaro %}
+                            {{ registro.passaro.nome_popular }}
+                        {% else %}
+                            Espécie não informada
+                        {% endif %}
+                    </h3>
+
+                    {% if registro.passaro and registro.passaro.nome_binomial %}
+                    <p class="validacao-cientifico">
+                        {{ registro.passaro.nome_binomial }}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <span class="validacao-id">
+                    Nº {{ registro.avistamento_img_id }}
+                </span>
+            </div>
+
+            <div class="validacao-conteudo">
+
+                <div class="validacao-foto">
+                    {% if registro.avistamento_img_filepath %}
+                    <img
+                        src="{{ url_for('static', filename=registro.avistamento_img_filepath) }}"
+                        alt="Fotografia do avistamento"
+                        loading="lazy"
+                    >
+                    {% else %}
+                    <div class="validacao-sem-foto">
+                        <span>📷</span>
+                        <p>Imagem não disponível</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="validacao-dados">
+
+                    <h4>Informações do registro</h4>
+
+                    <p>
+                        <strong>Descrição:</strong>
+                        {{ registro.avistamento_img_descricao or
+                           'Nenhuma descrição informada.' }}
+                    </p>
+
+                    <p>
+                        <strong>Data:</strong>
+                        {% if registro.avistamento_img_date %}
+                            {{ registro.avistamento_img_date.strftime('%d/%m/%Y') }}
+                        {% else %}
+                            Não informada
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Latitude:</strong>
+                        {{ registro.avistamento_img_latitude
+                           if registro.avistamento_img_latitude is not none
+                           else 'Não informada' }}
+                    </p>
+
+                    <p>
+                        <strong>Longitude:</strong>
+                        {{ registro.avistamento_img_longitude
+                           if registro.avistamento_img_longitude is not none
+                           else 'Não informada' }}
+                    </p>
+
+                    <div class="validacao-checagem">
+                        <h4>O que conferir?</h4>
+                        <ul>
+                            <li>Se a imagem permite observar a ave.</li>
+                            <li>Se a espécie indicada corresponde à imagem.</li>
+                            <li>Se a descrição e a data fazem sentido.</li>
+                            <li>Se as coordenadas são válidas, quando fornecidas.</li>
+                        </ul>
+                    </div>
+
+                    {% if registro.avistamento_img_latitude is not none
+                       and registro.avistamento_img_longitude is not none %}
+                    <a
+                        class="btn btn-secundario validacao-mapa-link"
+                        href="https://www.openstreetmap.org/?mlat={{ registro.avistamento_img_latitude }}&mlon={{ registro.avistamento_img_longitude }}#map=14/{{ registro.avistamento_img_latitude }}/{{ registro.avistamento_img_longitude }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Ver localização no mapa
+                    </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="estado-vazio">
+        <span>🔎</span>
+        <h3>Nenhum registro encontrado</h3>
+        <p>
+            Quando houver avistamentos cadastrados, eles aparecerão
+            nesta área para conferência.
+        </p>
+        <a href="{{ url_for('avistamentos') }}" class="btn">
+            Ir para avistamentos
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+<section class="validacao-faixa">
+    <div class="container">
+        <h2>Por que validar os registros?</h2>
+
+        <div class="validacao-beneficios">
+
+            <article>
+                <span>🔍</span>
+                <h3>Mais confiabilidade</h3>
+                <p>
+                    A conferência ajuda a identificar erros e informações
+                    que precisam de esclarecimento.
+                </p>
+            </article>
+
+            <article>
+                <span>🦜</span>
+                <h3>Identificação responsável</h3>
+                <p>
+                    Uma espécie não deve ser confirmada apenas porque
+                    foi selecionada no formulário.
+                </p>
+            </article>
+
+            <article>
+                <span>🌿</span>
+                <h3>Conservação ambiental</h3>
+                <p>
+                    Registros bem documentados podem contribuir para
+                    compreender a distribuição das aves.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

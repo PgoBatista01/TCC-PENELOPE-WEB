@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Penelope | Conservação das Aves{% endblock %}</title>
+
+    <meta name="description" content="Penelope: tecnologia e ciência cidadã na conservação das aves do Vale do Ribeira.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar container" aria-label="Navegação principal">
+
+            <a class="brand" href="{{ url_for('home') }}">
+                <img
+                    src="{{ url_for('static', filename='imgs/penelope.png') }}"
+                    alt="Logo Penelope"
+                    class="brand-logo"
+                    onerror="this.style.display='none'"
+                >
+                <span class="brand-text">
+                    <strong>Penelope</strong>
+                    <small>Ciência cidadã e biodiversidade</small>
+                </span>
+            </a>
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="navLinks"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{{ url_for('home') }}"
+                   class="{% if request.endpoint == 'home' %}active{% endif %}">
+                    Início
+                </a>
+
+                <a href="{{ url_for('aves') }}"
+                   class="{% if request.endpoint in ['aves', 'detalhes_aves'] %}active{% endif %}">
+                    Aves
+                </a>
+
+                <a href="{{ url_for('avistamentos') }}"
+                   class="{% if request.endpoint == 'avistamentos' %}active{% endif %}">
+                    Avistamentos
+                </a>
+
+                <a href="{{ url_for('mapa') }}"
+                   class="{% if request.endpoint == 'mapa' %}active{% endif %}">
+                    Mapa
+                </a>
+
+                <a href="{{ url_for('estatisticas') }}"
+                   class="{% if request.endpoint == 'estatisticas' %}active{% endif %}">
+                    Estatísticas
+                </a>
+
+                <a href="{{ url_for('sobre') }}"
+                   class="{% if request.endpoint == 'sobre' %}active{% endif %}">
+                    Sobre
+                </a>
+
+                <a href="{{ url_for('validacao') }}"
+                   class="{% if request.endpoint == 'validacao' %}active{% endif %}">
+                    Validação
+                </a>
+
+                <a href="{{ url_for('cadastro_ave') }}" class="nav-cta">
+                    Cadastrar ave
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% if mensagens %}
+                <section class="flash-container container" aria-live="polite">
+                    {% for categoria, mensagem in mensagens %}
+                        <div class="flash-message flash-{{ categoria }}">
+                            <span>{{ mensagem }}</span>
+                            <button
+                                type="button"
+                                class="flash-close"
+                                aria-label="Fechar mensagem"
+                                onclick="this.parentElement.remove()"
+                            >×</button>
+                        </div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <strong>Penelope</strong>
+                <p>
+                    Conhecer as aves é o primeiro passo para protegê-las.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <a href="{{ url_for('aves') }}">Catálogo</a>
+                <a href="{{ url_for('avistamentos') }}">Avistamentos</a>
+                <a href="{{ url_for('sobre') }}">Sobre o projeto</a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>
+                    Projeto de ciência cidadã voltado à conservação das aves
+                    do Vale do Ribeira.
+                </p>
+                <p>© 2026 Penelope · ETEC Registro</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        menuToggle.addEventListener("click", function () {
+            const aberto = navLinks.classList.toggle("is-open");
+
+            menuToggle.setAttribute("aria-expanded", aberto);
+            menuToggle.setAttribute(
+                "aria-label",
+                aberto ? "Fechar menu" : "Abrir menu"
+            );
+        });
+
+        navLinks.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                navLinks.classList.remove("is-open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Abrir menu");
+            });
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

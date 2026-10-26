@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %}Estatísticas | Penelope{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-conteudo">
+        <span class="eyebrow">Dados da ciência cidadã</span>
+
+        <h1>Estatísticas da biodiversidade</h1>
+
+        <p>
+            Acompanhe os dados do catálogo de aves e as contribuições
+            registradas pela comunidade no Penelope.
+        </p>
+
+        <div class="hero-acoes">
+            <a href="{{ url_for('aves') }}" class="btn">
+                Explorar catálogo
+            </a>
+
+            <a href="{{ url_for('avistamentos') }}" class="btn btn-secundario">
+                Registrar avistamento
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="container secao">
+
+    <div class="secao-titulo">
+        <span class="eyebrow">Visão geral</span>
+        <h2>Indicadores do sistema</h2>
+        <p>
+            Os números abaixo são calculados a partir dos dados cadastrados
+            no banco de dados.
+        </p>
+    </div>
+
+    <div class="estatisticas-grid">
+
+        <article class="estatistica-card">
+            <div class="estatistica-icone" aria-hidden="true">🐦</div>
+            <p>Espécies cadastradas</p>
+            <strong>{{ total_aves|default(0, true) }}</strong>
+            <span>no catálogo Penelope</span>
+        </article>
+
+        <article class="estatistica-card">
+            <div class="estatistica-icone" aria-hidden="true">📷</div>
+            <p>Avistamentos registrados</p>
+            <strong>{{ total_avistamentos|default(0, true) }}</strong>
+            <span>registros no sistema</span>
+        </article>
+
+        <article class="estatistica-card">
+            <div class="estatistica-icone" aria-hidden="true">🔊</div>
+            <p>Gravações de canto</p>
+            <strong>{{ total_audio|default(0, true) }}</strong>
+            <span>áudios no catálogo</span>
+        </article>
+
+        <article class="estatistica-card">
+            <div class="estatistica-icone" aria-hidden="true">🖼️</div>
+            <p>Vídeos cadastrados</p>
+            <strong>{{ total_video|default(0, true) }}</strong>
+            <span>vídeos no catálogo</span>
+        </article>
+
+    </div>
+</section>
+
+<section class="container secao">
+
+    <div class="secao-titulo">
+        <span class="eyebrow">Distribuição dos dados</span>
+        <h2>Estado de conservação</h2>
+        <p>
+            Veja quantas espécies estão cadastradas em cada categoria
+            de conservação.
+        </p>
+    </div>
+
+    {% if conservacao_labels|default([], true) and conservacao_valores|default([], true) %}
+
+        <div class="grafico-container">
+            <canvas
+                id="grafico-conservacao"
+                role="img"
+                aria-label="Gráfico de espécies por estado de conservação"
+            ></canvas>
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+            <span aria-hidden="true">📊</span>
+            <h3>Dados insuficientes para o gráfico</h3>
+            <p>
+                Cadastre espécies com seus estados de conservação para
+                visualizar essa distribuição.
+            </p>
+        </div>
+
+    {% endif %}
+
+</section>
+
+<section class="container secao">
+
+    <div class="secao-titulo">
+        <span class="eyebrow">Participação da comunidade</span>
+        <h2>Espécies com mais avistamentos</h2>
+        <p>
+            Consulte quais espécies possuem mais registros fotográficos
+            no sistema.
+        </p>
+    </div>
+
+    {% if ranking|default([], true) %}
+
+        <div class="grafico-container">
+            <canvas
+                id="grafico-avistamentos"
+                role="img"
+                aria-label="Gráfico das espécies com mais avistamentos"
+            ></canvas>
+        </div>
+
+        <div class="tabela-responsiva">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posição</th>
+                        <th>Espécie</th>
+                        <th>Quantidade de registros</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in ranking %}
+                        <tr>
+                            <td>{{ loop.index }}º</td>
+                            <td>{{ item.nome_popular }}</td>
+                            <td>{{ item.total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="estado-vazio">
+            <span aria-hidden="true">🌿</span>
+            <h3>Ainda não há avistamentos suficientes</h3>
+            <p>
+                Quando a comunidade registrar avistamentos, as espécies
+                com mais contribuições aparecerão nesta seção.
+            </p>
+
+            <a href="{{ url_for('avistamentos') }}" class="btn">
+                Registrar avistamento
+            </a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+<section class="container secao">
+
+    <div class="secao-titulo">
+        <span class="eyebrow">Explore os registros</span>
+        <h2>Conheça os dados do Penelope</h2>
+        <p>
+            Cada contribuição ajuda a ampliar o conhecimento sobre as aves
+            e incentiva a conservação da biodiversidade.
+        </p>
+    </div>
+
+    <div class="estatisticas-acoes">
+        <a href="{{ url_for('aves') }}" class="acao-estatistica">
+            <span aria-hidden="true">📚</span>
+            <h3>Catálogo de aves</h3>
+            <p>Conheça as espécies cadastradas.</p>
+        </a>
+
+        <a href="{{ url_for('avistamentos') }}" class="acao-estatistica">
+            <span aria-hidden="true">📍</span>
+            <h3>Avistamentos</h3>
+            <p>Compartilhe suas observações.</p>
+        </a>
+
+        <a href="{{ url_for('mapa') }}" class="acao-estatistica">
+            <span aria-hidden="true">🗺️</span>
+            <h3>Mapa de registros</h3>
+            <p>Explore as localizações dos avistamentos.</p>
+        </a>
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script id="dados-graficos" type="application/json">
+{
+    "conservacaoLabels": {{ conservacao_labels|default([], true)|tojson }},
+    "conservacaoValores": {{ conservacao_valores|default([], true)|tojson }},
+    "rankingLabels": {{ ranking|default([], true)|map(attribute='nome_popular')|list|tojson }},
+    "rankingValores": {{ ranking|default([], true)|map(attribute='total')|list|tojson }}
+}
+</script>
+
+<script>
+    const dadosGraficos = JSON.parse(
+        document.getElementById("dados-graficos").textContent
+    );
+    const rotulosConservacao = dadosGraficos.conservacaoLabels;
+    const valoresConservacao = dadosGraficos.conservacaoValores;
+    const rotulosAvistamentos = dadosGraficos.rankingLabels;
+    const valoresAvistamentos = dadosGraficos.rankingValores;
+
+    const elementoConservacao = document.getElementById("grafico-conservacao");
+
+    if (
+        elementoConservacao &&
+        rotulosConservacao.length > 0 &&
+        valoresConservacao.length > 0
+    ) {
+        new Chart(elementoConservacao, {
+            type: "doughnut",
+            data: {
+                labels: rotulosConservacao,
+                datasets: [{
+                    label: "Quantidade de espécies",
+                    data: valoresConservacao,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    }
+
+    const elementoAvistamentos = document.getElementById("grafico-avistamentos");
+
+    if (
+        elementoAvistamentos &&
+        rotulosAvistamentos.length > 0 &&
+        valoresAvistamentos.length > 0
+    ) {
+        new Chart(elementoAvistamentos, {
+            type: "bar",
+            data: {
+                labels: rotulosAvistamentos,
+                datasets: [{
+                    label: "Quantidade de avistamentos",
+                    data: valoresAvistamentos,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: "y",
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock %}
