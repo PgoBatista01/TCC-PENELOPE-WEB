@@ -41,28 +41,24 @@
     <div class="estatisticas-grid">
 
         <article class="estatistica-card">
-            <div class="estatistica-icone" aria-hidden="true">🐦</div>
             <p>Espécies cadastradas</p>
             <strong>{{ total_aves|default(0, true) }}</strong>
             <span>no catálogo Penelope</span>
         </article>
 
         <article class="estatistica-card">
-            <div class="estatistica-icone" aria-hidden="true">📷</div>
             <p>Avistamentos registrados</p>
             <strong>{{ total_avistamentos|default(0, true) }}</strong>
             <span>registros no sistema</span>
         </article>
 
         <article class="estatistica-card">
-            <div class="estatistica-icone" aria-hidden="true">🔊</div>
             <p>Gravações de canto</p>
             <strong>{{ total_audio|default(0, true) }}</strong>
             <span>áudios no catálogo</span>
         </article>
 
         <article class="estatistica-card">
-            <div class="estatistica-icone" aria-hidden="true">🖼️</div>
             <p>Vídeos cadastrados</p>
             <strong>{{ total_video|default(0, true) }}</strong>
             <span>vídeos no catálogo</span>
@@ -95,7 +91,6 @@
     {% else %}
 
         <div class="estado-vazio">
-            <span aria-hidden="true">📊</span>
             <h3>Dados insuficientes para o gráfico</h3>
             <p>
                 Cadastre espécies com seus estados de conservação para
@@ -153,7 +148,6 @@
     {% else %}
 
         <div class="estado-vazio">
-            <span aria-hidden="true">🌿</span>
             <h3>Ainda não há avistamentos suficientes</h3>
             <p>
                 Quando a comunidade registrar avistamentos, as espécies
@@ -182,19 +176,16 @@
 
     <div class="estatisticas-acoes">
         <a href="{{ url_for('aves') }}" class="acao-estatistica">
-            <span aria-hidden="true">📚</span>
             <h3>Catálogo de aves</h3>
             <p>Conheça as espécies cadastradas.</p>
         </a>
 
         <a href="{{ url_for('avistamentos') }}" class="acao-estatistica">
-            <span aria-hidden="true">📍</span>
             <h3>Avistamentos</h3>
             <p>Compartilhe suas observações.</p>
         </a>
 
         <a href="{{ url_for('mapa') }}" class="acao-estatistica">
-            <span aria-hidden="true">🗺️</span>
             <h3>Mapa de registros</h3>
             <p>Explore as localizações dos avistamentos.</p>
         </a>
