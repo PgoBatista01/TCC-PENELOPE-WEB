@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Detalhes da Ave | Penelope{% endblock %}
@@ -28,10 +29,13 @@
             </span>
         </header>
 
+        <!-- INFORMAÇÕES DA AVE -->
         <section class="detalhes-bloco">
+
             <h2>Sobre esta ave</h2>
 
             <div class="detalhes-informacoes">
+
                 <div class="detalhes-item">
                     <span>Nome popular</span>
                     <strong>{{ passaro.nome_popular }}</strong>
@@ -56,6 +60,7 @@
                     <span>Estado de conservação</span>
                     <strong>{{ passaro.estado_conservacao }}</strong>
                 </div>
+
             </div>
 
             <h3>Descrição</h3>
@@ -63,52 +68,92 @@
             <p class="detalhes-descricao">
                 {{ passaro.passaro_descricao }}
             </p>
+
         </section>
 
+        <!-- FOTOGRAFIAS -->
         <section class="detalhes-bloco">
+
             <h2>Fotografias</h2>
 
             {% if imagens %}
 
-                <div class="galeria-aves">
+                <div class="cards aves-grid">
+
                     {% for imagem in imagens %}
+
                         {% if imagem.img_passaro_filepath %}
-                            <figure class="galeria-item">
+
+                            {% set caminho = imagem.img_passaro_filepath.replace('\\', '/') %}
+
+                            {% if caminho.startswith('static/') %}
+                                {% set caminho = caminho[7:] %}
+                            {% endif %}
+
+                            <article class="card">
+
                                 <img
-                                    src="{{ url_for('static', filename=imagem.img_passaro_filepath) }}"
+                                    class="card-imagem"
+                                    src="{{ url_for('static', filename=caminho) }}"
                                     alt="Fotografia de {{ passaro.nome_popular }}"
                                     loading="lazy"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                 >
 
+                                <div
+                                    class="ave-imagem-vazia"
+                                    style="display: none;"
+                                >
+                                    <p>Imagem não encontrada</p>
+                                </div>
+
                                 {% if imagem.img_passaro_origin %}
-                                    <figcaption>
-                                        Fonte: {{ imagem.img_passaro_origin }}
-                                    </figcaption>
+
+                                    <div class="card-conteudo">
+                                        <p>
+                                            Fonte: {{ imagem.img_passaro_origin }}
+                                        </p>
+                                    </div>
+
                                 {% endif %}
-                            </figure>
+
+                            </article>
+
                         {% endif %}
+
                     {% endfor %}
+
                 </div>
 
             {% else %}
 
                 <div class="estado-vazio">
                     <span aria-hidden="true">🐦</span>
-                    <p>Ainda não há fotografias cadastradas para esta ave.</p>
+
+                    <p>
+                        Ainda não há fotografias cadastradas para esta ave.
+                    </p>
                 </div>
 
             {% endif %}
+
         </section>
 
+        <!-- CANTOS DA AVE -->
         <section class="detalhes-bloco">
+
             <h2>Cantos da ave</h2>
 
             {% if cantos %}
 
                 <div class="lista-midias">
+
                     {% for canto in cantos %}
+
                         <article class="midia-item">
+
                             <div>
+
                                 <h3>
                                     {% if canto.canto_filename %}
                                         {{ canto.canto_filename }}
@@ -118,7 +163,9 @@
                                 </h3>
 
                                 {% if canto.canto_origin %}
-                                    <p>Fonte: {{ canto.canto_origin }}</p>
+                                    <p>
+                                        Fonte: {{ canto.canto_origin }}
+                                    </p>
                                 {% endif %}
 
                                 {% if canto.canto_date %}
@@ -127,34 +174,49 @@
                                         {{ canto.canto_date.strftime('%d/%m/%Y') }}
                                     </p>
                                 {% endif %}
+
                             </div>
 
                             {% if canto.canto_filepath %}
+
                                 <audio controls preload="none">
+
                                     <source
                                         src="{{ url_for('static', filename=canto.canto_filepath) }}"
                                         {% if canto.canto_filetype %}
                                             type="{{ canto.canto_filetype }}"
                                         {% endif %}
                                     >
+
                                     Seu navegador não suporta áudio.
+
                                 </audio>
+
                             {% endif %}
+
                         </article>
+
                     {% endfor %}
+
                 </div>
 
             {% else %}
 
                 <div class="estado-vazio">
                     <span aria-hidden="true">🔊</span>
-                    <p>Não há gravações de canto cadastradas para esta ave.</p>
+
+                    <p>
+                        Não há gravações de canto cadastradas para esta ave.
+                    </p>
                 </div>
 
             {% endif %}
+
         </section>
 
+        <!-- REGISTROS DE AVISTAMENTOS -->
         <section class="detalhes-bloco">
+
             <h2>Registros de avistamentos</h2>
 
             {% set total_avistamentos =
@@ -164,25 +226,33 @@
             %}
 
             <div class="detalhes-informacoes">
+
                 <div class="detalhes-item">
                     <span>Registros com fotografia</span>
-                    <strong>{{ passaro.avistamentos_imagem|length }}</strong>
+                    <strong>
+                        {{ passaro.avistamentos_imagem|length }}
+                    </strong>
                 </div>
 
                 <div class="detalhes-item">
                     <span>Registros com áudio</span>
-                    <strong>{{ passaro.avistamentos_audio|length }}</strong>
+                    <strong>
+                        {{ passaro.avistamentos_audio|length }}
+                    </strong>
                 </div>
 
                 <div class="detalhes-item">
                     <span>Registros com vídeo</span>
-                    <strong>{{ passaro.avistamentos_video|length }}</strong>
+                    <strong>
+                        {{ passaro.avistamentos_video|length }}
+                    </strong>
                 </div>
 
                 <div class="detalhes-item">
                     <span>Total de registros</span>
                     <strong>{{ total_avistamentos }}</strong>
                 </div>
+
             </div>
 
             <p>
@@ -197,11 +267,13 @@
             <a href="{{ url_for('mapa') }}" class="btn btn-secundario">
                 Explorar mapa
             </a>
+
         </section>
 
     {% else %}
 
         <div class="estado-vazio">
+
             <h2>Ave não encontrada</h2>
 
             <p>
@@ -211,6 +283,7 @@
             <a href="{{ url_for('aves') }}" class="btn">
                 Voltar ao catálogo
             </a>
+
         </div>
 
     {% endif %}
